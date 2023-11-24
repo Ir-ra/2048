@@ -10,6 +10,10 @@ const gameScore = document.querySelector('.game-score');
 const size = 4;
 let score = 0;
 const gameBoard = [];
+const UP = 'up';
+const DOWN = 'down';
+const RIGHT = 'right';
+const LEFT = 'left';
 
 function initGame() {
   for (let r = 0; r < size; r++) {
@@ -144,49 +148,49 @@ function moveCommands(command) {
     }
   }
 
-  function moveUp() {
-    for (let col = 0; col < size; col++) {
-      for (let row = 1; row < size; row++) {
-        move(row, col, -1, 0);
-      }
-    }
-  }
-
-  function moveDown() {
-    for (let col = 0; col < size; col++) {
-      for (let row = size - 2; row >= 0; row--) {
-        move(row, col, 1, 0);
+  function moveHorizontal(start, end, step, moveFunction) {
+    for (let row = 0; row < size; row++) {
+      for (let i = start; i !== end; i += step) {
+        moveFunction(row, i);
       }
     }
   }
 
   function moveLeft() {
-    for (let row = 0; row < size; row++) {
-      for (let col = 1; col < size; col++) {
-        move(row, col, 0, -1);
-      }
-    }
+    moveHorizontal(1, size, 1, (row, col) => move(row, col, 0, -1));
   }
 
   function moveRight() {
-    for (let row = 0; row < size; row++) {
-      for (let col = size - 2; col >= 0; col--) {
-        move(row, col, 0, 1);
+    moveHorizontal(size - 2, -1, -1, (row, col) => move(row, col, 0, 1));
+  }
+
+  function moveVertical(start, end, step, moveFunction) {
+    for (let col = 0; col < size; col++) {
+      for (let i = start; i !== end; i += step) {
+        moveFunction(i, col);
       }
     }
   }
 
+  function moveUp() {
+    moveVertical(1, size, 1, (row, col) => move(row, col, -1, 0));
+  }
+
+  function moveDown() {
+    moveVertical(size - 2, -1, -1, (row, col) => move(row, col, 1, 0));
+  }
+
   switch (command) {
-    case 'up':
+    case UP:
       moveUp();
       break;
-    case 'down':
+    case DOWN:
       moveDown();
       break;
-    case 'left':
+    case LEFT:
       moveLeft();
       break;
-    case 'right':
+    case RIGHT:
       moveRight();
       break;
   }
@@ -220,13 +224,20 @@ startButton.addEventListener('click', (e) => {
 });
 
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'ArrowUp') {
-    moveCommands('up');
-  } else if (e.key === 'ArrowDown') {
-    moveCommands('down');
-  } else if (e.key === 'ArrowLeft') {
-    moveCommands('left');
-  } else if (e.key === 'ArrowRight') {
-    moveCommands('right');
+  switch (e.key) {
+    case 'ArrowUp':
+      moveCommands(UP);
+      break;
+    case 'ArrowDown':
+      moveCommands(DOWN);
+      break;
+    case 'ArrowLeft':
+      moveCommands(LEFT);
+      break;
+    case 'ArrowRight':
+      moveCommands(RIGHT);
+      break;
+    default:
+      break;
   }
 });
