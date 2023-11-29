@@ -10,10 +10,21 @@ const gameScore = document.querySelector('.game-score');
 const size = 4;
 let score = 0;
 const gameBoard = [];
-const UP = 'up';
-const DOWN = 'down';
-const RIGHT = 'right';
-const LEFT = 'left';
+
+const COMMAND = {
+  UP: 'up',
+  DOWN: 'down',
+  RIGHT: 'right',
+  LEFT: 'left'
+};
+
+const ArrowCOMMAND = {
+  UP: 'ArrowUp',
+  DOWN: 'ArrowDown',
+  RIGHT: 'ArrowRight',
+  LEFT: 'ArrowLeft'
+};
+
 
 function initGame() {
   for (let r = 0; r < size; r++) {
@@ -181,16 +192,16 @@ function moveCommands(command) {
   }
 
   switch (command) {
-    case UP:
+    case COMMAND.UP:
       moveUp();
       break;
-    case DOWN:
+    case COMMAND.DOWN:
       moveDown();
       break;
-    case LEFT:
+    case COMMAND.LEFT:
       moveLeft();
       break;
-    case RIGHT:
+    case COMMAND.RIGHT:
       moveRight();
       break;
   }
@@ -225,17 +236,17 @@ startButton.addEventListener('click', (e) => {
 
 document.addEventListener('keydown', (e) => {
   switch (e.key) {
-    case 'ArrowUp':
-      moveCommands(UP);
+    case ArrowCOMMAND.UP:
+      moveCommands(COMMAND.UP);
       break;
-    case 'ArrowDown':
-      moveCommands(DOWN);
+    case ArrowCOMMAND.DOWN:
+      moveCommands(COMMAND.DOWN);
       break;
-    case 'ArrowLeft':
-      moveCommands(LEFT);
+    case ArrowCOMMAND.LEFT:
+      moveCommands(COMMAND.LEFT);
       break;
-    case 'ArrowRight':
-      moveCommands(RIGHT);
+    case ArrowCOMMAND.RIGHT:
+      moveCommands(COMMAND.RIGHT);
       break;
     default:
       break;
